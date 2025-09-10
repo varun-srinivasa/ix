@@ -127,7 +127,7 @@ export class SplitButton {
     }
   }
 
-  private get dropdownItems() {
+  private get dropdownItems(): HTMLElement[] {
     return Array.from(this.hostElement.querySelectorAll('ix-dropdown-item'));
   }
   private onDropdownShowChanged(event: CustomEvent<boolean>) {
@@ -137,7 +137,8 @@ export class SplitButton {
         this.dropdownElement!,
         (index: number) => this.focusDropdownItem(index)
       );
-      setTimeout(() => this.focusDropdownItem(0), 0);
+      this.arrowFocusController.wrap = true;
+      requestAnimationFrame(() => this.focusDropdownItem(0));
       this.dropdownElement?.addEventListener('keydown', this.handleKeyDown);
     } else {
       this.arrowFocusController?.disconnect();
@@ -145,20 +146,37 @@ export class SplitButton {
       this.dropdownElement?.removeEventListener('keydown', this.handleKeyDown);
     }
   }
-  private handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Tab') {
-      this.dropdownItems.forEach((item) => item.setAttribute('tabindex', '-1'));
-      this.dropdownElement!.show = false;
 
-      if (event.shiftKey) {
-        const actionButton = this.hostElement.shadowRoot?.querySelector(
-          'ix-button, ix-icon-button:not(.anchor)'
-        ) as HTMLElement | null;
-        if (actionButton && !actionButton.hasAttribute('disabled')) {
-          event.preventDefault();
-          actionButton.focus();
-        }
-      }
+  private handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== 'Tab') {
+      return;
+    }
+    this.dropdownItems.forEach((item) => item.setAttribute('tabindex', '-1'));
+    this.dropdownElement!.show = false;
+    if (!event.shiftKey) {
+      return;
+    }
+    const actionButton = this.hostElement.shadowRoot?.querySelector(
+      'ix-button, ix-icon-button:not(.anchor)'
+    ) as HTMLElement | null;
+
+    const anchorButton = this.hostElement.shadowRoot?.querySelector(
+      'ix-icon-button.anchor'
+    ) as HTMLElement | null;
+
+    const isDisabled = actionButton?.classList.contains('disabled');
+
+    if (actionButton && !isDisabled) {
+      event.preventDefault();
+      requestAnimationFrame(() => {
+        const shadowBtn = actionButton.shadowRoot?.querySelector('button');
+        (shadowBtn ?? actionButton).focus();
+      });
+    } else if (anchorButton) {
+      anchorButton.setAttribute('tabindex', '-1');
+      requestAnimationFrame(() => {
+        anchorButton.removeAttribute('tabindex');
+      });
     }
   };
 
