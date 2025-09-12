@@ -23,7 +23,7 @@ export type ButtonVariant = 'danger' | 'primary' | 'secondary';
 
 @Component({
   tag: 'ix-button',
-  shadow: { delegatesFocus: true },
+  shadow: true,
   styleUrl: './button.scss',
 })
 export class Button implements IxButtonComponent {
@@ -151,6 +151,10 @@ export class Button implements IxButtonComponent {
     }
   }
 
+  setFocus() {
+    this.hostElement.shadowRoot!.querySelector('button')?.focus();
+  }
+
   render() {
     const baseButtonProps: BaseButtonProps = {
       variant: this.variant,
@@ -167,6 +171,7 @@ export class Button implements IxButtonComponent {
       onClick: () => this.dispatchFormEvents(),
       type: this.type,
       alignment: this.alignment,
+      tabIndex: this.hostElement.tabIndex,
       ariaAttributes: {
         'aria-label': this.ariaLabelButton,
       },
@@ -174,9 +179,11 @@ export class Button implements IxButtonComponent {
 
     return (
       <Host
+        tabindex={this.disabled ? -1 : 0}
         class={{
           disabled: this.disabled || this.loading,
         }}
+        onFocus={() => this.setFocus()}
       >
         <BaseButton {...baseButtonProps}>
           <slot></slot>
