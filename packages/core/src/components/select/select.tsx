@@ -241,19 +241,19 @@ export class Select implements IxInputFieldComponent<string | string[]> {
     return this.hostElement.closest('form');
   }
 
-private isFormNoValidate(): boolean {
-  const form = this.parentForm;
-  if (!form) {
-    return false;
-  }
-  const noValidateAttributes = [
-    'novalidate',
-    'data-novalidate',
-    'ngnovalidate'
-  ];
+  private isFormNoValidate(): boolean {
+    const form = this.parentForm;
+    if (!form) {
+      return false;
+    }
+    const noValidateAttributes = [
+      'novalidate',
+      'data-novalidate',
+      'ngnovalidate',
+    ];
 
-  return noValidateAttributes.some(attr => form.hasAttribute(attr));
-}
+    return noValidateAttributes.some((attr) => form.hasAttribute(attr));
+  }
 
   private readonly focusControllerCallbackBind =
     this.focusDropdownItem.bind(this);
