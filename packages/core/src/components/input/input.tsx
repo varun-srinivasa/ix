@@ -37,6 +37,12 @@ import {
   getAriaAttributesForInput,
   mapValidationResult,
   onInputBlur,
+  checkInternalValidity,
+  syncValidationClasses,
+  resetInputComponent,
+  isTouchedUtil,
+  isDirtyUtil,
+  getAssociatedFormElementUtil,
 } from './input.util';
 
 let inputIds = 0;
@@ -75,6 +81,15 @@ export class Input implements IxInputFieldComponent<string> {
    * The value of the text field.
    */
   @Prop({ reflect: true, mutable: true }) value: string = '';
+
+  @Watch('value') watchValuePropHandler(newValue: string) {
+    if (this.isResetting) {
+      return;
+    }
+    this.dirty = newValue !== this.initialValue;
+    this.updateFormInternalValue(newValue);
+    this.valueChange.emit(newValue);
+  }
 
   /**
    * Specifies whether the text field is required.
@@ -147,6 +162,17 @@ export class Input implements IxInputFieldComponent<string> {
   @Prop() allowedCharactersPattern?: string;
 
   /**
+   * If false, pressing Enter will submit the form (if inside a form).
+   * Set to true to suppress submit on Enter.
+   */
+  @Prop({ reflect: true }) suppressSubmitOnEnter: boolean = false;
+
+  /**
+   * Text alignment within the input. 'start' aligns the text to the start of the input, 'end' aligns the text to the end of the input.
+   */
+  @Prop() textAlignment: 'start' | 'end' = 'start';
+
+  /**
    * Event emitted when the value of the text field changes.
    */
   @Event() valueChange!: EventEmitter<string>;
@@ -174,6 +200,9 @@ export class Input implements IxInputFieldComponent<string> {
   private readonly slotStartRef = makeRef<HTMLDivElement>();
   private readonly inputId = `input-${inputIds++}`;
   private touched = false;
+  private dirty = false;
+  private isResetting = false;
+  private initialValue: string = '';
 
   private disposableChangesAndVisibilityObservers?: DisposableChangesAndVisibilityObservers;
 
@@ -188,6 +217,7 @@ export class Input implements IxInputFieldComponent<string> {
   }
 
   componentWillLoad() {
+    this.initialValue = this.value;
     this.updateFormInternalValue(this.value);
     this.inputType = this.type;
   }
@@ -220,12 +250,16 @@ export class Input implements IxInputFieldComponent<string> {
   /** @internal */
   @Method()
   async getAssociatedFormElement(): Promise<HTMLFormElement | null> {
-    return this.formInternals.form;
+    return getAssociatedFormElementUtil(this.formInternals);
   }
 
   /** @internal */
   @Method()
   hasValidValue(): Promise<boolean> {
+    if (!this.required) {
+      return Promise.resolve(true);
+    }
+
     return Promise.resolve(!!this.value);
   }
 
@@ -260,7 +294,51 @@ export class Input implements IxInputFieldComponent<string> {
    */
   @Method()
   isTouched(): Promise<boolean> {
-    return Promise.resolve(this.touched);
+    return isTouchedUtil(this.touched);
+  }
+
+  /**
+   * Returns whether the text field has been modified from its initial value.
+   * @internal
+   */
+  @Method()
+  isDirty(): Promise<boolean> {
+    return isDirtyUtil(this.dirty);
+  }
+
+  /**
+   * Synchronizes CSS validation classes with the component's validation state.
+   * This method ensures proper visual styling based on validation status, particularly for Vue.
+   * @internal
+   */
+  @Method()
+  async syncValidationClasses(): Promise<void> {
+    return syncValidationClasses(this);
+  }
+
+  /**
+   * Resets the input field to its original untouched state and initial value.
+   * This clears the value, removes touched and dirty states, and recomputes validity.
+   *
+   * @example
+   * ```typescript
+   * // React
+   * await inputRef.current?.reset();
+   *
+   * // Angular
+   * await this.input.nativeElement.reset();
+   *
+   * // Vue
+   * await this.$refs.input.reset();
+   *
+   * // HTML/JavaScript
+   * const input = document.querySelector('ix-input');
+   * await input.reset();
+   * ```
+   */
+  @Method()
+  async reset(): Promise<void> {
+    await resetInputComponent(this, this.initialValue, '', this.inputRef.current);
   }
 
   render() {
@@ -307,15 +385,24 @@ export class Input implements IxInputFieldComponent<string> {
               placeholder={this.placeholder}
               inputRef={this.inputRef}
               onKeyPress={(event) => checkAllowedKeys(this, event)}
-              valueChange={(value) => this.valueChange.emit(value)}
+              valueChange={() => {
+                if (this.inputRef.current) {
+                  setTimeout(() => {
+                    checkInternalValidity(this, this.inputRef.current!);
+                  }, 0);
+                }
+              }}
               updateFormInternalValue={(value) =>
                 this.updateFormInternalValue(value)
               }
               onBlur={() => {
-                onInputBlur(this, this.inputRef.current);
                 this.touched = true;
+                onInputBlur(this, this.inputRef.current);
               }}
               ariaAttributes={inputAria}
+              form={this.formInternals.form ?? undefined}
+              suppressSubmitOnEnter={this.suppressSubmitOnEnter}
+              textAlignment={this.textAlignment}
             ></InputElement>
             <SlotEnd
               slotEndRef={this.slotEndRef}
