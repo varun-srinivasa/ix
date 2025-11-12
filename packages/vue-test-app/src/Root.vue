@@ -25,9 +25,6 @@ import ApplicationAdvanced from './preview-examples/application-advanced.vue';
 import AvatarImage from './preview-examples/avatar-image.vue';
 import AvatarInitials from './preview-examples/avatar-initials.vue';
 import Avatar from './preview-examples/avatar.vue';
-import BasicNavigationMigration from './preview-examples/basic-navigation-migration.vue';
-import BasicNavigationWithoutHeader from './preview-examples/basic-navigation-without-header.vue';
-import BasicNavigation from './preview-examples/basic-navigation.vue';
 import BlindHeaderActions from './preview-examples/blind-header-actions.vue';
 import BlindVariants from './preview-examples/blind-variants.vue';
 import Blind from './preview-examples/blind.vue';
@@ -150,9 +147,6 @@ import LayoutAuto from './preview-examples/layout-auto.vue';
 import LinkButtonDisabled from './preview-examples/link-button-disabled.vue';
 import LinkButton from './preview-examples/link-button.vue';
 import Loading from './preview-examples/loading.vue';
-import MapNavigationMigration from './preview-examples/map-navigation-migration.vue';
-import MapNavigationOverlay from './preview-examples/map-navigation-overlay.vue';
-import MapNavigation from './preview-examples/map-navigation.vue';
 import MenuCategory from './preview-examples/menu-category.vue';
 import MenuWithBottomTabs from './preview-examples/menu-with-bottom-tabs.vue';
 import MessageBar from './preview-examples/message-bar.vue';
@@ -160,6 +154,7 @@ import MessageBarRemoval from './preview-examples/message-bar-removal.vue';
 import Message from './preview-examples/message.vue';
 import ModalSizes from './preview-examples/modal-sizes.vue';
 import ModalExample from './preview-examples/modal.vue';
+import ModalClose from './preview-examples/modal-close.vue';
 import NumberInputDisabled from './preview-examples/number-input-disabled.vue';
 import NumberInputLabel from './preview-examples/number-input-label.vue';
 import NumberInputReadOnly from './preview-examples/number-input-readonly.vue';
@@ -220,6 +215,7 @@ import ToggleDisabled from './preview-examples/toggle-disabled.vue';
 import ToggleIndeterminate from './preview-examples/toggle-indeterminate.vue';
 import Toggle from './preview-examples/toggle.vue';
 import Tooltip from './preview-examples/tooltip.vue';
+import TooltipWithIcon from './preview-examples/tooltip-with-icon.vue';
 import TreeCustom from './preview-examples/tree-custom.vue';
 import Tree from './preview-examples/tree.vue';
 import Upload from './preview-examples/upload.vue';
@@ -252,9 +248,6 @@ const routes: any = {
   '/preview/avatar-image': AvatarImage,
   '/preview/avatar-initials': AvatarInitials,
   '/preview/avatar': Avatar,
-  '/preview/basic-navigation-without-header': BasicNavigationWithoutHeader,
-  '/preview/basic-navigation': BasicNavigation,
-  '/preview/basic-navigation-migration': BasicNavigationMigration,
   '/preview/blind-header-actions': BlindHeaderActions,
   '/preview/blind-variants': BlindVariants,
   '/preview/blind': Blind,
@@ -396,6 +389,7 @@ const routes: any = {
   '/preview/settings': Settings,
   '/preview/kpi': Kpi,
   '/preview/modal': ModalExample,
+  '/preview/modal-close': ModalClose,
   '/preview/modal-form-ix-button-submit': ModalFormIxButtonSubmit,
   '/preview/number-input': NumberInput,
   '/preview/number-input-disabled': NumberInputDisabled,
@@ -407,10 +401,8 @@ const routes: any = {
   '/preview/date-input-with-slots': DateInputWithSlots,
   '/preview/workflow': Workflow,
   '/preview/workflow-vertical': WorkflowVertical,
-  '/preview/map-navigation': MapNavigation,
-  '/preview/map-navigation-overlay': MapNavigationOverlay,
-  '/preview/map-navigation-migration': MapNavigationMigration,
   '/preview/tooltip': Tooltip,
+  '/preview/tooltip-with-icon': TooltipWithIcon,
   '/preview/push-card': PushCard,
   '/preview/page-header': ContentHeader,
   '/preview/page-header-no-back': ContentHeaderNoBack,

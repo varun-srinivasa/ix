@@ -26,9 +26,6 @@ import ApplicationHeader from './preview-examples/application-header';
 import Avatar from './preview-examples/avatar';
 import AvatarImage from './preview-examples/avatar-image';
 import AvatarInitials from './preview-examples/avatar-initials';
-import BasicNavigation from './preview-examples/basic-navigation';
-import BasicNavigationMigration from './preview-examples/basic-navigation-migration';
-import BasicNavigationWithoutHeader from './preview-examples/basic-navigation-without-header';
 import Blind from './preview-examples/blind';
 import BlindHeaderActions from './preview-examples/blind-header-actions';
 import BlindVariants from './preview-examples/blind-variants';
@@ -148,15 +145,13 @@ import LayoutAutoCustom from './preview-examples/layout-auto-custom';
 import LinkButton from './preview-examples/link-button';
 import LinkButtonDisabled from './preview-examples/link-button-disabled';
 import Loading from './preview-examples/loading';
-import MapNavigation from './preview-examples/map-navigation';
-import MapNavigationMigration from './preview-examples/map-navigation-migration';
-import MapNavigationOverlay from './preview-examples/map-navigation-overlay';
 import MenuCategory from './preview-examples/menu-category';
 import MenuWithBottomTabs from './preview-examples/menu-with-bottom-tabs';
 import Message from './preview-examples/message';
 import MessageBar from './preview-examples/message-bar';
 import MessageBarRemoval from './preview-examples/message-bar-removal.tsx';
 import Modal from './preview-examples/modal';
+import ModalClose from './preview-examples/modal-close.tsx';
 import ModalFormIxButtonSubmit from './preview-examples/modal-form-ix-button-submit.tsx';
 import ModalSizes from './preview-examples/modal-sizes';
 import NumberInput from './preview-examples/number-input';
@@ -219,6 +214,7 @@ import ToggleButtonPrimaryGhost from './preview-examples/toggle-button-primary-g
 import ToggleButtonPrimaryOutline from './preview-examples/toggle-button-primary-outline';
 import ToggleButtonSecondary from './preview-examples/toggle-button-secondary';
 import ToggleButtonSecondaryGhost from './preview-examples/toggle-button-secondary-ghost';
+import TooltipWithIcon from './preview-examples/tooltip-with-icon';
 import ToggleButtonSecondaryOutline from './preview-examples/toggle-button-secondary-outline';
 import ToggleChecked from './preview-examples/toggle-checked';
 import ToggleCustomLabel from './preview-examples/toggle-custom-label';
@@ -268,15 +264,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/preview/avatar-image" element={<AvatarImage />} />
         <Route path="/preview/avatar-initials" element={<AvatarInitials />} />
         <Route path="/preview/avatar" element={<Avatar />} />
-        <Route
-          path="/preview/basic-navigation-without-header"
-          element={<BasicNavigationWithoutHeader />}
-        />
-        <Route path="/preview/basic-navigation" element={<BasicNavigation />} />
-        <Route
-          path="/preview/basic-navigation-migration"
-          element={<BasicNavigationMigration />}
-        />
         <Route
           path="/preview/blind-header-actions"
           element={<BlindHeaderActions />}
@@ -537,15 +524,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         />
         <Route path="/preview/link-button" element={<LinkButton />} />
         <Route path="/preview/loading" element={<Loading />} />
-        <Route
-          path="/preview/map-navigation-overlay"
-          element={<MapNavigationOverlay />}
-        />
-        <Route path="/preview/map-navigation" element={<MapNavigation />} />
-        <Route
-          path="/preview/map-navigation-migration"
-          element={<MapNavigationMigration />}
-        />
         <Route path="/preview/menu-category" element={<MenuCategory />} />
         <Route
           path="/preview/menu-with-bottom-tabs"
@@ -577,6 +555,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         />
 
         <Route path="/preview/modal" element={<Modal />} />
+        <Route path="/preview/modal-close" element={<ModalClose />} />
         <Route
           path="/preview/pagination-advanced"
           element={<PaginationAdvanced />}
@@ -678,6 +657,10 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         />
         <Route path="/preview/toggle" element={<Toggle />} />
         <Route path="/preview/tooltip" element={<Tooltip />} />
+        <Route
+          path="/preview/tooltip-with-icon"
+          element={<TooltipWithIcon />}
+        />
         <Route path="/preview/tree-custom" element={<TreeCustom />} />
         <Route path="/preview/number-input" element={<NumberInput />} />
         <Route
